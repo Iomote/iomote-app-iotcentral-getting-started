@@ -27,12 +27,23 @@ unsigned long cnt = 0;
 
 void setup()
 {
-	Serial.write("X400 Getting Started!\r\n");
+	int8_t initRes;
+  do
+  {
+    Serial.write("X400 Getting Started!\r\n");
     //  This instruction initializes the board, it's mandatory for any sketch to correctly work with the X400 Cloud Operations!
-    Iomote.begin("iot central getting started", 1,0,0); 
+    Iomote.begin("iot central demo", 1,0,0);  
 
     // iotcentral (https://yourIotCentralAppName.azureiotcentral.com):
-    Iomote.iotCentralInfo(SCOPE_ID, DEVICE_ID, PRIMARY_KEY);
+    initRes = Iomote.iotCentralInfo(SCOPE_ID, DEVICE_ID, PRIMARY_KEY);
+    
+    if(initRes != 0)
+    {
+      delay(1000);
+    }
+  } while(initRes != 0);
+  
+  sendTime = millis();
 }
 
 void loop()
